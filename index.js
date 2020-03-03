@@ -2,6 +2,7 @@ require('dotenv').config()
 
 const express = require('express')
 const bodyParser = require('body-parser')
+const cors = require('cors')
 const low = require('lowdb')
 const FileSync = require('lowdb/adapters/FileSync')
 
@@ -13,6 +14,7 @@ db.defaults({ users: [] }).write()
 const server = express()
 
 const main = async () => {
+  server.use(cors())
   server.use(bodyParser.urlencoded({ extended: false }))
   server.use(bodyParser.json())
   
@@ -41,6 +43,12 @@ const main = async () => {
     }
   })
 
+  server.get('/', (req, res) => {
+    res.json({
+      success: 1,
+      message: 'vorm is running successfully'
+    })
+  })
   server.listen(process.env.PORT, () => {
     console.log(`Running on ${process.env.PORT}`)
   })
